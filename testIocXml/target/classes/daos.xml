@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="accountDao"
+        class="hello.dao.AccountDao">
+        <!-- additional collaborators and configuration for this bean go here -->
+        <constructor-arg value="account"> </constructor-arg>
+    </bean>
+
+    <bean id="itemDao" class="hello.dao.ItemDao" scope="prototype">
+      <constructor-arg name="name" value="item"> </constructor-arg>
+        <!-- additional collaborators and configuration for this bean go here -->
+    </bean>
+
+    <!-- more bean definitions for data access objects go here -->
+
+</beans>
