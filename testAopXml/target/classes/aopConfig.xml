@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="testService" class="com.xyz.myapp.service.impl.TestServiceImpl"></bean> 
+    <bean id="idempotent" class="com.xyz.myapp.service.impl.idempotentOperation"></bean> 
+     
+     <aop:config>
+
+	    <aop:aspect id="concurrentOperationRetry" ref="concurrentOperationExecutor">
+	<!-- com.xyz.myapp.service.impl.TestServiceImpl.doConcurrentOperation(String, int) -->
+	      <aop:pointcut id="idempotentOperation"
+            expression="execution(* com.xyz.myapp.service.*.*(..))"/>
+
+        <aop:around
+            pointcut-ref="idempotentOperation"
+            method="doConcurrentOperation"/>
+	
+	    </aop:aspect>
+	
+	</aop:config>
+
+	<bean id="concurrentOperationExecutor"
+	    class="com.xyz.myapp.service.impl.ConcurrentOperationExecutor">
+	        <property name="maxRetries" value="1"/>
+	        <property name="order" value="2"/>
+	</bean>
+
+</beans>
