@@ -10,7 +10,6 @@ public class petstorConstructorImpl implements PetStoreService{
 	private  AccountDao accountDao;
 	private ItemDao itemDao;
 	
-	@Override
 	public void getDaoName(ParentDao parentDao) {
 		// TODO Auto-generated method stub
 		System.out.println(parentDao.toString());

@@ -23,7 +23,6 @@ public class PetStoreServiceImpl implements PetStoreService{
 		this.itemDao = itemDao;
   }
 	
-	@Override
 	public void getDaoName(ParentDao parentDao) {
 		// TODO Auto-generated method stub
 		

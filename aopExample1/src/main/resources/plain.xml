@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:aop="http://www.springframework.org/schema/aop"
+      xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+   <!-- this is the object that will be proxied by Spring's AOP infrastructure -->
+   <bean id="fooService" class="interServiceImpl.DefaultFooService"/>
+
+   <!-- this is the actual advice itself -->
+   <bean id="profiler" class="aspect.SimpleProfiler"/>
+   
+   <bean id="beforeProfiler" class="aspect.beforeProfiler"/>
+   
+   <bean id="afterProfiler" class="aspect.afterProfiler"/>
+
+   <aop:config>
+      <aop:aspect ref="profiler">
+
+       <!--  <aop:pointcut id="theExecutionOfSomeFooServiceMethod"
+                    expression="execution(* interService.FooService.getFoo(String,int))
+                    and args(name, age)"/> -->
+         <aop:pointcut id="theExecutionOfSomeFooServiceMethod"
+                    expression="execution(* interService.FooService.getFoo(..))"/>
+         
+         <aop:around pointcut-ref="theExecutionOfSomeFooServiceMethod"
+                  method="profile"/> 
+      </aop:aspect>
+      
+     <aop:aspect ref="beforeProfiler">
+        <aop:pointcut expression="execution(* interService.FooService.getFoo(..))" id="beforePointcut"/>
+        <aop:before method="beforeAdvice" pointcut-ref="beforePointcut"/>
+       
+      </aop:aspect> 
+   
+    <aop:aspect ref="afterProfiler">
+        <aop:pointcut expression="execution(* interService.FooService.getFoo(..))" id="afterPointcut"/>
+        <aop:after method="AfterAdvice" pointcut-ref="afterPointcut"/>
+    </aop:aspect>
+      
+   </aop:config>
+
+</beans>
